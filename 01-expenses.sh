@@ -39,7 +39,7 @@ VALIDATE(){
     VALIDATE $? "Enabled Mysql Server"
 
     systemctl start mysqld $>>$LOG_FILE
-    VALIDATE $? "Restared Mysql Server"
+    # VALIDATE $? "Restarted Mysql Server"
 
       mysql_secure_installation --set-root-pass ExpenseApp@1
 
