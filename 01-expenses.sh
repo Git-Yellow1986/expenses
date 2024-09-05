@@ -38,7 +38,7 @@ VALIDATE(){
     systemctl enable mysqld &>>$LOG_FILE
     VALIDATE $? "Enabled Mysql Server"
 
-    systemctl start mysqld $>>$LOG_FILE
+    systemctl start mysqld &>>$LOG_FILE
      VALIDATE $? "Restarted Mysql Server"
 
 mysql -h mysql.matt786s.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
@@ -50,23 +50,3 @@ then
 else
     echo -e "MySQL root password is already setup...$Y SKIPPING $N" | tee -a $LOG_FILE
 fi
-
-
-
-
-
-      mysql_secure_installation --set-root-pass ExpenseApp@1
-
-    
-    #mysql -h 172.31.47.187 -u root -pExpenseApp@1 -e 'show databases;' $>>$LOG_FILE
-    if [ $? -ne 0 ]
-        then 
-        echo "Mysql root password not setup, setting now" &>>$LOG_FILE
-        mysql_secure_installation --set-root-pass ExpenseApp@1
-        
-            VALIDATE $? "Setting Up Root Password
-    else
-        echo " Myql root password is already setup...$Y SKIP $N" | tee -a $LOG_FILE
-            VALIDATE $? "Setting Up Root Password"
-    fi
-        
