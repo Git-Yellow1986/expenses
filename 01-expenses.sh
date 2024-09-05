@@ -31,10 +31,7 @@ VALIDATE(){
         echo "script stated at : $(date)" | tee -a $LOG_FILE
 
     CHECK_ROOT
-        if [ $# -eq 0 ]
-        then 
-            USAGE
-        fi
+        
     dnf install mysql-server -y &>>$LOG_FILE
     VALIDATE $? "Installing Mysql Server"
 
@@ -44,16 +41,18 @@ VALIDATE(){
     systemctl start mysqld $>>$LOG_FILE
     VALIDATE $? "Restared Mysql Server"
 
+      mysql_secure_installation --set-root-pass ExpenseApp@1
+
     
-    mysql -h 172.31.47.187 -u root -pExpenseApp@1 -e 'show databases;' $>>$LOG_FILE
-    if [ $? -ne 0 ]
-        then 
-        echo "Mysql root password not setup, setting now" &>>$LOG_FILE
-        mysql_secure_installation --set-root-pass ExpenseApp@1
+    # #mysql -h 172.31.47.187 -u root -pExpenseApp@1 -e 'show databases;' $>>$LOG_FILE
+    # if [ $? -ne 0 ]
+    #     then 
+    #     echo "Mysql root password not setup, setting now" &>>$LOG_FILE
+    #     mysql_secure_installation --set-root-pass ExpenseApp@1
         
-            VALIDATE $? "Setting Up Root Password
-    else
-        echo " Myql root password is already setup...$Y SKIP $N" | tee -a $LOG_FILE
-            VALIDATE $? "Setting Up Root Password"
-    fi
+    #         VALIDATE $? "Setting Up Root Password
+    # else
+    #     echo " Myql root password is already setup...$Y SKIP $N" | tee -a $LOG_FILE
+    #         VALIDATE $? "Setting Up Root Password"
+    # fi
         
